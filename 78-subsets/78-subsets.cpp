@@ -11,8 +11,10 @@ public:
             ans.push_back(ds);
             return;
         }
+        //Taking the index
         ds.push_back(nums[i]);
         f(i+1,ds,nums,ans);
+        //Not taking the index
         ds.pop_back();
         f(i+1,ds,nums,ans);
     }
