@@ -2,22 +2,26 @@ class Solution {
 public:
     int findMaxForm(vector<string>& strs, int m, int n) {
         int l=strs.size();
-        vector<vector<vector<int>>>dp(l,vector<vector<int>>(m+1,vector<int>(n+1,-1)));
-        return f(l-1,m,n,strs,dp);
-    }
-    int f(int i,int m,int n,vector<string>&strs,vector<vector<vector<int>>>&dp){
-        int zero=count(strs[i].begin(),strs[i].end(),'0');
-        int ones=count(strs[i].begin(),strs[i].end(),'1');
-        if(i==0){
-            if((m>=zero)&&(n>=ones))return 1;
-            return 0;
+        int zero=count(strs[0].begin(),strs[0].end(),'0');
+        int ones=count(strs[0].begin(),strs[0].end(),'1');
+        vector<vector<vector<int>>>dp(l,vector<vector<int>>(m+1,vector<int>(n+1,0)));
+        for(int i=zero;i<=m;i++){
+            for(int j=ones;j<=n;j++){
+                dp[0][i][j]=1;
+            }
         }
-        if(dp[i][m][n]!=-1)return dp[i][m][n];
-        int dont_take=f(i-1,m,n,strs,dp);
-        int take=0;
-        if((m>=zero)&&(n>=ones))take=1+f(i-1,m-zero,n-ones,strs,dp);
-        // else if(m>=zero)take=f(i-1,m-zero,n,str);
-        // else if(n>=ones)take=f(i-1,m,n-ones,str);
-        return dp[i][m][n]=max(take,dont_take);
+        for(int i=1;i<l;i++){
+            int zero=count(strs[i].begin(),strs[i].end(),'0');
+            int ones=count(strs[i].begin(),strs[i].end(),'1');
+            for(int j=0;j<=m;j++){
+                for(int k=0;k<=n;k++){
+                    int dont_take=0+dp[i-1][j][k];
+                    int take=0;
+                    if((j>=zero)&&(k>=ones))take=1+dp[i-1][j-zero][k-ones];
+                    dp[i][j][k]=max(take,dont_take); 
+                }
+            }
+        }
+        return dp[l-1][m][n];
     }
 };
