@@ -13,18 +13,14 @@ class Solution {
 public:
     int maxi=-1e9;
     int diameterOfBinaryTree(TreeNode* root) {
-        if(root==NULL)return 0;
-        int lh=height(root->left);
-        int rh=height(root->right);
-        maxi=max(lh+rh,maxi);
-        diameterOfBinaryTree(root->left);
-        diameterOfBinaryTree(root->right);
+        height(root);
         return maxi;
     }
     int height(TreeNode* root){
         if(root==NULL)return 0;
         int lh=height(root->left);
         int rh=height(root->right);
+        maxi=max(lh+rh,maxi);
         return 1+max(lh,rh);
     }
 };
