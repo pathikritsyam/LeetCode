@@ -18,9 +18,9 @@ public:
         vector<int>res;
         if(root==NULL)return res;
         if(!isleaf(root))res.push_back(root->val);
-        addLeftBoundary(root,res);
-        addLeaves(root,res);
-        addRightBoundary(root,res);
+        addLeftBoundary(root,res);//traverse left boundary
+        addLeaves(root,res);//traverse leaf nodes
+        addRightBoundary(root,res);//traverse right boundary
         return res;
     }
     void addLeftBoundary(TreeNode* root,vector<int>&res){
@@ -41,6 +41,7 @@ public:
         }
         for(int i=tmp.size()-1;i>=0;i--)res.push_back(tmp[i]);
     }
+    //pre-order traversal, inorder will also work just keep left node first
     void addLeaves(TreeNode* root,vector<int>&res){
         if(isleaf(root)){
             res.push_back(root->val);
