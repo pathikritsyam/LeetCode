@@ -15,12 +15,13 @@ public:
         int res=-1;
         if(!root)return 0;
         queue<pair<TreeNode*,int>>q;
-        q.push({root,0});
+        q.push({root,1});
         while(!q.empty()){
-            unsigned long long int n=q.size();
+            int n=q.size();
             int first,last;
+            int mini=q.back().second;
             for(int i=0;i<n;i++){
-                unsigned long long int cur=q.front().second;
+                int cur=q.front().second-mini;//negative indices but removes the problem of signed integer overflow
                 TreeNode* node=q.front().first;
                 q.pop();
                 if(i==0)first=cur;
