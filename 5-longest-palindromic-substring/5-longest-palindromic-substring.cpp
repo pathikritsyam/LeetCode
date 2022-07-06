@@ -1,29 +1,28 @@
 class Solution {
 public:
     string longestPalindrome(string s) {
-        int best_len=0;
-        string best_s="";
-        int n=s.length();
-        for(int mid=0;mid<n;mid++){
-            for(int x=0;mid-x>=0&&mid+x<n;x++){
-                if(s[mid-x]!=s[mid+x])break;
-                int len=2*x+1;
-                if(len>best_len){
-                    best_len=len;
-                    best_s=s.substr(mid-x,len);
-                }
+        string t="#";
+        for(int i=0;i<s.length();i++)t=t+s[i]+"#";
+        t="^"+t+"$";
+        vector<int>p(t.length(),0);
+        int c=0,r=0;
+        for(int i=1;i<t.length()-1;i++){
+            int mirr=2*c-i;
+            if(i<r)p[i]=min(r-i,p[mirr]);
+            while(t[i+(1+p[i])]==t[i-(1+p[i])])p[i]++;
+            if(i+p[i]>r){
+                c=i;
+                r=i+p[i];
             }
         }
-        for(int mid=0;mid<n;mid++){
-            for(int x=1;mid-x+1>=0&&mid+x<n;x++){
-                if(s[mid-x+1]!=s[mid+x])break;
-                int len=2*x;
-                if(len>best_len){
-                    best_len=len;
-                    best_s=s.substr(mid-x+1,len);
-                }
+        int m=0,index=-1;
+        for(int i=0;i<p.size();i++){
+            if(p[i]>m){
+                m=p[i];
+                index=i;
             }
         }
-        return best_s;
+        return s.substr((index-m-1)/2,m);
+        // return t;
     }
 };
