@@ -11,8 +11,8 @@ public:
     int f(int l,int r,vector<int>&piles){
         if(l>=r)return 0;
         if(dp[l][r]!=-1)return dp[l][r];
-        int left=piles[l]+min(f(l+2,r,piles),f(l+1,r-1,piles));
-        int right=piles[r]+min(f(l,r-2,piles),f(l+1,r-1,piles));
+        int left=piles[l]+max(f(l+2,r,piles),f(l+1,r-1,piles));
+        int right=piles[r]+max(f(l,r-2,piles),f(l+1,r-1,piles));
         return dp[l][r]=max(left,right);
     }
 };
