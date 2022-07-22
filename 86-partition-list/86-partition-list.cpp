@@ -14,33 +14,17 @@ public:
         queue<ListNode*>temp;
         queue<ListNode*> dont_edit;
         ListNode* cur=head;
+        ListNode* newCur=new ListNode();
+        ListNode* newHead=newCur;
         while(cur!=NULL){
-            if(cur->val<x)temp.push(cur);
-            else dont_edit.push(cur);
+            if(cur->val<x)newCur->next=new ListNode(cur->val),newCur=newCur->next;
             cur=cur->next;
         }
-        int n=dont_edit.size();
-        // for(int i=0;i<n;i++){
-        //     cout<<dont_edit.front()->val<<"\n";
-        //     dont_edit.pop();
-        // }
-        // if(temp.empty())return head;
-        // cur=temp.front();
-        // temp.pop();
-        // 
-        cur=new ListNode();
-        head=cur;
-        while(!temp.empty()){
-            cur->next= new ListNode(temp.front()->val);
+        cur=head;
+        while(cur!=NULL){
+            if(cur->val>=x)newCur->next=new ListNode(cur->val),newCur=newCur->next;
             cur=cur->next;
-            temp.pop();
         }
-        //cur=cur->next;
-        while(!dont_edit.empty()){
-            cur->next=new ListNode(dont_edit.front()->val);
-            cur=cur->next;
-            dont_edit.pop();
-        }
-        return head->next;
+        return newHead->next;
     }
 };
