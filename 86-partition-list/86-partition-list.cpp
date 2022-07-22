@@ -11,8 +11,6 @@
 class Solution {
 public:
     ListNode* partition(ListNode* head, int x) {
-        queue<ListNode*>temp;
-        queue<ListNode*> dont_edit;
         ListNode* cur=head;
         ListNode* newCur=new ListNode();
         ListNode* newHead=newCur;
