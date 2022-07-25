@@ -3,7 +3,6 @@ public:
     vector<int>price;
     int profit;
     int maxProfit(vector<int>& prices) {
-        //vector<vector<int>>dp(prices.size()+1,vector<int>(2,0));
         vector<int>prev(2),cur(2);
         int n=prices.size();
         prev[0]=prev[1]=0;
