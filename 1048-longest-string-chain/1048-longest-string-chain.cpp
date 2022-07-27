@@ -5,30 +5,15 @@ public:
     }
     int longestStrChain(vector<string>& words) {
         sort(words.begin(),words.end(),comp);
-        int n=words.size();
-        vector<int>dp(n,1);
-        for(int i=0;i<n;i++){
-            for(int j=0;j<i;j++){
-                if(compare(words[i],words[j]))dp[i]=max(dp[i],dp[j]+1);
+        int res=0;
+        unordered_map<string,int>dp;
+        for(auto w:words){
+            for(int i=0;i<w.size();i++){
+                string temp=w.substr(0,i)+w.substr(i+1);
+                dp[w]=max(dp[w],dp.find(temp)==dp.end()?1:dp[temp]+1);
             }
+            res=max(res,dp[w]);
         }
-        return *max_element(dp.begin(),dp.end());
-    }
-    bool compare(string &a,string &b){
-        if(a.size()!=b.size()+1)return false;
-        int first=0,second=0;
-        while(first<a.size()){
-            if(a[first]==b[second]){
-                first++;
-                second++;
-            }
-            else first++;
-        }
-        if(first==a.size()&&second==b.size())return true;
-        return false;
+        return res;
     }
 };
-// ab
-//   ^
-// a
-// ^
