@@ -1,20 +1,22 @@
 class Solution {
 public:
     int longestValidParentheses(string s) {
-        s="#"+s;
-        int n=s.size(),res=0;
-        int dp[n+1];
-        memset(dp,0,sizeof(dp));
-        for(int i=1;i<=n;i++){
-            if(s[i]==')'&&s[i-1]=='(')dp[i]=dp[i-2]+2;
-            else if(s[i]==')'&&s[i-1]==')'){
-                if(s[i-dp[i-1]-1]=='(')dp[i]=dp[i-1]+dp[i-dp[i-1]-2]+2;
+        stack<int>st;
+        st.push(-1);
+        int res=0;
+        for(int i=0;i<s.length();i++){
+            if(s[i]=='(')st.push(i);
+            else{
+                st.pop();
+                if(st.empty())st.push(i);
+                else res=max(res,i-st.top());
             }
-            res=max(res,dp[i]);
         }
         return res;
     }
 };
-//  0123456789
-// ")((()))())"
-//  0000246080    
+//  012345
+// "()()())"
+//  -1
+//  4
+     
