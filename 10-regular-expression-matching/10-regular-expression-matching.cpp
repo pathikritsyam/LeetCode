@@ -1,16 +1,18 @@
 class Solution {
 public:
     bool isMatch(string s, string p) {
-        int m = s.size(), n = p.size();
-        bool dp[m+1][n+1];
-        memset(dp,false,sizeof(dp));
-        dp[0][0] = true;
-        for (int i = 0; i <= m; i++) {
-            for (int j = 1; j <= n; j++) {
-                if (p[j - 1] == '*')  dp[i][j] = dp[i][j - 2] || (i && dp[i - 1][j] && (s[i - 1] == p[j - 2] || p[j - 2] == '.'));
-                else dp[i][j] = i && dp[i - 1][j - 1] && (s[i - 1] == p[j - 1] || p[j - 1] == '.');
-            }
-        }
-        return dp[m][n];
+        int n=s.length(),m=p.length();
+        vector<vector<int>>dp(n+1,vector<int>(m+1,-1));
+        return f(0,0,s,p,dp);
+    }
+    int f(int i,int j,string s,string p,vector<vector<int>>&dp){
+        int n=s.length(),m=p.length();
+        if(i>=n&&j>=m)return 1;
+        if(j>=m)return 0;
+        if(dp[i][j]!=-1)return dp[i][j];
+        bool match=(i<n)&&(s[i]==p[j]||p[j]=='.');
+        if((j+1)<m&&p[j+1]=='*')return dp[i][j]= f(i,j+2,s,p,dp)+(match&&f(i+1,j,s,p,dp));
+        if(match)return dp[i][j]=f(i+1,j+1,s,p,dp);
+        return 0;
     }
 };
