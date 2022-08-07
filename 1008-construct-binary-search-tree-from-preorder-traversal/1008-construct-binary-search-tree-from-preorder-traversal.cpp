@@ -11,22 +11,21 @@
  */
 class Solution {
 public:
+    int idx,n;
     TreeNode* bstFromPreorder(vector<int>& preorder) {
-        vector<int>inorder=preorder;
-        sort(inorder.begin(),inorder.end());
-        unordered_map<int,int>inmap;
-        for(int i=0;i<inorder.size();i++){
-            inmap[inorder[i]]=i;
-        }
-        return bst(inorder,0,inorder.size()-1,preorder,0,preorder.size()-1,inmap);
+        int l=-1e9,r=1e9;
+        idx=0;
+        n=preorder.size();
+        return f(l,r,preorder);
     }
-    TreeNode* bst(vector<int>&inorder,int istart,int iend,vector<int>&preorder,int pstart,int pend,unordered_map<int,int>&inmap){
-        if(istart>iend||pstart>pend)return NULL;
-        TreeNode* root=new TreeNode(preorder[pstart]);
-        int iroot=inmap[root->val];
-        int numleft=iroot-istart;
-        root->left=bst(inorder,istart,iroot-1,preorder,pstart+1,pstart+numleft,inmap);
-        root->right=bst(inorder,iroot+1,iend,preorder,pstart+numleft+1,pend,inmap);
+    TreeNode* f(int l,int r,vector<int>&preorder){
+        if(idx==n)return NULL;
+        int val=preorder[idx];
+        if(val<l||val>r)return NULL;
+        idx++;
+        TreeNode* root=new TreeNode(val);
+        root->left=f(l,val,preorder);
+        root->right=f(val,r,preorder);
         return root;
     }
 };
