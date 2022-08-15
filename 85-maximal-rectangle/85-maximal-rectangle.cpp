@@ -1,29 +1,39 @@
 class Solution {
 public:
+    int histogram(vector<int>heights){
+        stack<int>st;
+        st.push(-1);
+        int maxArea=0;
+        for(int i=0;i<heights.size();i++)
+        {
+            while(st.top()!=-1&&heights[st.top()]>=heights[i]){
+                int cur_height=heights[st.top()];
+                st.pop();
+                int cur_width=i-st.top()-1;
+                maxArea=max(maxArea,cur_height*cur_width);
+            }
+            st.push(i);
+        }
+        while(st.top()!=-1){
+            int cur_height=heights[st.top()];
+            st.pop();
+            int cur_width=heights.size()-st.top()-1;
+            maxArea=max(maxArea,cur_height*cur_width);
+        }
+        return maxArea;
+    }
     int maximalRectangle(vector<vector<char>>& matrix) {
         int m=matrix.size(),n=matrix[0].size();
-        int dp[m][n];
-        memset(dp,0,sizeof(dp));
         int maxArea=0;
+        vector<int>dp(n);
         for(int i=0;i<m;i++){
             for(int j=0;j<n;j++){
-                if(matrix[i][j]=='1'){
-                    dp[i][j]=j==0?1:dp[i][j-1]+1;
-                    int maxWidth=dp[i][j];
-                    for(int k=i;k>=0;k--){
-                        maxWidth=min(maxWidth,dp[k][j]);
-                        maxArea=max(maxArea,maxWidth*(i-k+1));
-                    }
-                }
+                dp[j]=matrix[i][j]=='1'?dp[j]+1:0;
             }
+            maxArea=max(maxArea,histogram(dp));
         }
         return maxArea;
     }
 };
 //1 0 1 0 0
-//1 0 1 2 3
-//1 2 3 4 5
-//1 0 0 1 0
-//maxWidth=min(maxWidth,curWidth)
-//curArea=maxWidth*(k+1);
-//maxArea=max(maxArea,curArea)
+//2 0 2 1 1
