@@ -29,6 +29,7 @@ public:
             vector<int>col;
             for(auto j:i.second){
                 col.insert(col.end(),j.second.begin(),j.second.end());
+                // col=vector<int>(j.second.begin(),j.second.end());
             }
             ans.push_back(col);
         }
