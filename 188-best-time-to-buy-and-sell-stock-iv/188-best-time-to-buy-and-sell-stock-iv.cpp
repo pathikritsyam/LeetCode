@@ -1,20 +1,18 @@
 class Solution {
 public:
-    int maxProfit(int k, vector<int>& prices) {
-        int n=prices.size();
-        vector<vector<int>>dp(n+1,vector<int>(2*k+1,0));
-        for(int i=0;i<=2*k;i++)dp[n][i]=0;
-        for(int i=0;i<=n;i++)dp[i][2*k]=0;
-        for(int i=n-1;i>=0;i--){
-            for(int j=2*k-1;j>=0;j--){
-                if(j&1){
-                    dp[i][j]=max(prices[i]+dp[i+1][j+1],dp[i+1][j]);
+    int maxProfit(int k, vector<int>& P) {
+        if(P.empty())return 0;
+        int dp[1005][1005]={{0}};
+        //dp[i][j]=maximum profit from at most i transactions using P[0....j]
+        for(int i=1;i<=k;i++){
+            for(int j=1;j<P.size();j++){
+                int maxi=0;
+                for(int t=1;t<=j;t++){
+                    maxi=max(maxi,P[j]-P[t-1]+dp[i-1][t-1]);
                 }
-                else{
-                    dp[i][j]=max(-prices[i]+dp[i+1][j+1],dp[i+1][j]);
-                }
+                dp[i][j]=max(dp[i][j-1],maxi);
             }
         }
-        return dp[0][0];
+        return dp[k][P.size()-1];
     }
 };
