@@ -1,30 +1,14 @@
 class Solution:
     def getSkyline(self, buildings: List[List[int]]) -> List[List[int]]:
-        events = []
-        for L, R, H in buildings:
-            # append start point of building
-            events.append((L, -H, R))
-            # append end point of building
-            events.append((R, 0, 0))
+        x_nheight=sorted([(l,-h,r) for l,r,h in buildings]+[(r,0,None) for _,r,_ in buildings])
+        result,max_heap=[[0,0]],[[0,float('inf')]]
+        for x,n_height,r in x_nheight:
+            while x>=max_heap[0][1]:
+                heapq.heappop(max_heap)
+            if n_height!=0:
+                heapq.heappush(max_heap,[n_height,r])
+            cur_max_height=-max_heap[0][0]
+            if result[-1][1]!= cur_max_height:
+                result.append([x,cur_max_height])
+        return result[1:]
             
-        # sort the event
-        events.sort()
-        
-        # init for result and heap
-        res = [[0, 0]]
-        hp = [(0, float("inf"))]
-        
-        for pos, negH, R in events:
-            # pop out building which is end
-            while hp[0][1] <= pos:
-                heapq.heappop(hp)
-            
-            # if it is a start of building, push it into heap as current building
-            if negH != 0:
-                heapq.heappush(hp, (negH, R))
-            
-            # if change in height with previous key point, append to result
-            if res[-1][1] != -hp[0][0]:
-                res.append([pos, -hp[0][0]])
-        
-        return res[1:]
