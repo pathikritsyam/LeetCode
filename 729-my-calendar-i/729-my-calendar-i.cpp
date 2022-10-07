@@ -1,15 +1,22 @@
 class MyCalendar {
 public:
-    vector<pair<int, int>> reg;
+    map<int,int>sweep;
     MyCalendar() {
         
     }
     
     bool book(int start, int end) {
-        for(auto [s,e]:reg){
-            if(max(s,start)<min(e,end))return false;
+        int cur=0;
+        sweep[start]++;
+        sweep[end]--;
+        for(auto [_,val]:sweep){
+            cur+=val;
+            if(cur>1){
+                sweep[start]--;
+                sweep[end]++;
+                return false;
+            }
         }
-        reg.push_back({start,end});
         return true;
     }
 };
@@ -19,4 +26,3 @@ public:
  * MyCalendar* obj = new MyCalendar();
  * bool param_1 = obj->book(start,end);
  */
-//[10,20],[8,9]
